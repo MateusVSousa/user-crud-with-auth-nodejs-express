@@ -1,10 +1,13 @@
 import users from "../database";
 import jwt from "jsonwebtoken";
+import errorService from "./exc/error.service";
 
-const profileUsersService = (token) => {
-  const decode = jwt.verify(token, "SECRET_KEY");
-  const id = decode.id;
-  const userProfile = users.filter((user) => user.id === id);
-  return userProfile;
+const profileUsersService = (id) => {
+  const userProfile = users.findIndex((user) => user.id === id);
+  console.log(userProfile);
+  if (userProfile === -1) {
+    return errorService("User not Found");
+  }
+  return users[userProfile];
 };
 export default profileUsersService;
